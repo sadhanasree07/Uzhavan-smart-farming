@@ -1,0 +1,531 @@
+{
+    "en": {
+      "appTitle": "Uzhavan - Smart Farming Assistant",
+      "soilOption": "Soil & Pest Detection",
+      "cropOption": "Crop & Irrigation Management",
+      "aidOption": "Government Aids",
+      "soilTitle": "Soil & Pest Detection",
+      "soilImageLabel": "Upload Soil Image",
+      "soilButton": "Analyze Soil",
+      "cropTitle": "Crop & Irrigation Management",
+      "nitrogenLabel": "Nitrogen (N) Level",
+      "phosphorusLabel": "Phosphorus (P) Level",
+      "potassiumLabel": "Potassium (K) Level",
+      "tempLabel": "Temperature (°C)",
+      "humidityLabel": "Humidity (%)",
+      "phLabel": "Soil pH",
+      "rainfallLabel": "Rainfall (mm)",
+      "soilTypeLabel": "Soil Type",
+      "cropButton": "Recommend Crop & Irrigation",
+      "aidTitle": "Government Aids",
+      "stateLabel": "State",
+      "landLabel": "Land Size (acres)",
+      "aidButton": "Get Government Schemes",
+      "backButton": "Back",
+      "resultFields": {
+        "Soil Type": "Soil Type",
+        "Pest Detection": "Pest Detection",
+        "Recommended Crops": "Recommended Crops",
+        "Irrigation Status": "Irrigation Status",
+        "Estimated Yield": "Estimated Yield",
+        "State": "State",
+        "Land Size": "Land Size",
+        "Available Schemes": "Available Schemes",
+        "Eligibility": "Eligibility",
+        "Contact": "Contact",
+        "Note": "Note",
+        "acres": "acres"
+      },
+      "predictionValues": {
+        "soil_type": {
+          "Alluvial": "Alluvial",
+          "Clay": "Clay",
+          "Black": "Black",
+          "Red": "Red"
+        },
+        "pest_detection": {
+          "None": "None",
+          "Aphids": "Aphids",
+          "Locusts": "Locusts"
+        },
+        "crops": {
+          "Wheat": "Wheat",
+          "Rice": "Rice",
+          "Maize": "Maize"
+        },
+        "irrigation": {
+          "Adequate": "Adequate",
+          "Insufficient": "Insufficient"
+        },
+        "schemes": {
+          "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)": "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)",
+          "Pradhan Mantri Fasal Bima Yojana (PMFBY)": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+          "Pradhan Mantri Krishi Sinchayee Yojana (PMKSY)": "Pradhan Mantri Krishi Sinchayee Yojana (PMKSY)",
+          "Soil Health Card Scheme": "Soil Health Card Scheme"
+        }
+      },
+      "pest_note_template": "This {soil_type} may have these pests: {pests}",
+      "errorMessages": {
+        "noImage": "Please select an image",
+        "soilAnalysis": "Failed to analyze soil",
+        "network": "Network error",
+        "invalidNumber": "must be a valid number",
+        "rangeError": "must be between",
+        "and": "and",
+        "noCrops": "No crops recommended",
+        "notSpecified": "Not specified",
+        "notAvailable": "Not available",
+        "invalidAidInput": "Please fill all fields with a valid state and non-negative land size",
+        "noSchemes": "No schemes found",
+        "schemesFailed": "Failed to load government schemes",
+        "error": "Error",
+        "unknown": "Unknown"
+      },
+      "successMessages": {
+        "soilAnalysis": "Soil analysis completed!",
+        "cropRecommendation": "Crop recommendation generated!",
+        "schemesLoaded": "Government schemes loaded!"
+      }
+    },
+    "ta": {
+      "appTitle": "உழவன் - ஸ்மார்ட் விவசாய உதவியாளர்",
+      "soilOption": "மண் & பூச்சி கண்டறிதல்",
+      "cropOption": "பயிர் & நீர்ப்பாசன மேலாண்மை",
+      "aidOption": "அரசு உதவிகள்",
+      "soilTitle": "மண் & பூச்சி கண்டறிதல்",
+      "soilImageLabel": "மண் படத்தை பதிவேற்றவும்",
+      "soilButton": "மண்ணை பகுப்பாய்வு செய்",
+      "cropTitle": "பயிர் & நீர்ப்பாசன மேலாண்மை",
+      "nitrogenLabel": "நைட்ரஜன் (N) அளவு",
+      "phosphorusLabel": "பாஸ்பரஸ் (P) அளவு",
+      "potassiumLabel": "பொட்டாசியம் (K) அளவு",
+      "tempLabel": "வெப்பநிலை (°C)",
+      "humidityLabel": "ஈரப்பதம் (%)",
+      "phLabel": "மண் pH",
+      "rainfallLabel": "மழைப்பொழிவு (மிமீ)",
+      "soilTypeLabel": "மண் வகை",
+      "cropButton": "பயிர் & நீர்ப்பாசனத்தை பரிந்துரை",
+      "aidTitle": "அரசு உதவிகள்",
+      "stateLabel": "மாநிலம்",
+      "landLabel": "நில அளவு (ஏக்கர்)",
+      "aidButton": "அரசு திட்டங்களைப் பெறு",
+      "backButton": "பின்னோக்கி",
+      "resultFields": {
+        "Soil Type": "மண் வகை",
+        "Pest Detection": "பூச்சி கண்டறிதல்",
+        "Recommended Crops": "பரிந்துரைக்கப்பட்ட பயிர்கள்",
+        "Irrigation Status": "நீர்ப்பாசன நிலை",
+        "Estimated Yield": "மதிப்பிடப்பட்ட விளைச்சல்",
+        "State": "மாநிலம்",
+        "Land Size": "நில அளவு",
+        "Available Schemes": "கிடைக்கும் திட்டங்கள்",
+        "Eligibility": "தகுதி",
+        "Contact": "தொடர்பு",
+        "Note": "குறிப்பு",
+        "acres": "ஏக்கர்"
+      },
+      "predictionValues": {
+        "soil_type": {
+          "Alluvial": "வண்டல்",
+          "Clay": "களிமண்",
+          "Black": "கருப்பு",
+          "Red": "சிவப்பு"
+        },
+        "pest_detection": {
+          "None": "எதுவுமில்லை",
+          "Aphids": "பேன்கள்",
+          "Locusts": "வெட்டுக்கிளிகள்"
+        },
+        "crops": {
+          "Wheat": "கோதுமை",
+          "Rice": "நெல்",
+          "Maize": "மக்காச்சோளம்"
+        },
+        "irrigation": {
+          "Adequate": "போதுமானது",
+          "Insufficient": "போதாது"
+        },
+        "schemes": {
+          "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)": "பிரதம மந்திரி கிசான் சம்மான் நிதி",
+          "Pradhan Mantri Fasal Bima Yojana (PMFBY)": "பிரதம மந்திரி பயிர் காப்பீட்டு திட்டம்",
+          "Pradhan Mantri Krishi Sinchayee Yojana (PMKSY)": "பிரதம மந்திரி கிரிஷி சிஞ்சயீ யோஜனா",
+          "Soil Health Card Scheme": "மண் ஆரோக்கிய அட்டை திட்டம்"
+        }
+      },
+      "pest_note_template": "இந்த {soil_type} மண்ணில் இந்தப் {pests} பூச்சிகள் இருக்கலாம்",
+      "errorMessages": {
+        "noImage": "படத்தைத் தேர்ந்தெடுக்கவும்",
+        "soilAnalysis": "மண்ணை பகுப்பாய்வு செய்ய முடியவில்லை",
+        "network": "பிணையப் பிழை",
+        "invalidNumber": "சரியான எண்ணாக இருக்க வேண்டும்",
+        "rangeError": "இடையில் இருக்க வேண்டும்",
+        "and": "மற்றும்",
+        "noCrops": "பயிர்கள் பரிந்துரைக்கப்படவில்லை",
+        "notSpecified": "குறிப்பிடப்படவில்லை",
+        "notAvailable": "கிடைக்கவில்லை",
+        "invalidAidInput": "சரியான மாநிலம் மற்றும் எதிர்மறை அல்லாத நில அளவு உள்ளிடவும்",
+        "noSchemes": "திட்டங்கள் எதுவும் கிடைக்கவில்லை",
+        "schemesFailed": "அரசு திட்டங்களை ஏற்ற முடியவில்லை",
+        "error": "பிழை",
+        "unknown": "தெரியவில்லை"
+      },
+      "successMessages": {
+        "soilAnalysis": "மண் பகுப்பாய்வு முடிந்தது!",
+        "cropRecommendation": "பயிர் பரிந்துரை உருவாக்கப்பட்டது!",
+        "schemesLoaded": "அரசு திட்டங்கள் ஏற்றப்பட்டன!"
+      }
+    },
+    "te": {
+      "appTitle": "ఉళవన్ - స్మార్ట్ ఫార్మింగ్ అసిస్టెంట్",
+      "soilOption": "మట్టి & కీటకాల గుర్తింపు",
+      "cropOption": "పంట & సాగునీటి నిర్వహణ",
+      "aidOption": "ప్రభుత్వ సహాయం",
+      "soilTitle": "మట్టి & కీటకాల గుర్తింపు",
+      "soilImageLabel": "మట్టి చిత్రాన్ని అప్‌లోడ్ చేయండి",
+      "soilButton": "మట్టిని విశ్లేషించు",
+      "cropTitle": "పంట & సాగునీటి నిర్వహణ",
+      "nitrogenLabel": "నైట్రోజన్ (N) స్థాయి",
+      "phosphorusLabel": "ఫాస్ఫరస్ (P) స్థాయి",
+      "potassiumLabel": "పొటాషియం (K) స్థాయి",
+      "tempLabel": "ఉష్ణోగ్రత (°C)",
+      "humidityLabel": "తేమ (%)",
+      "phLabel": "మట్టి pH",
+      "rainfallLabel": "వర్షపాతం (మిమీ)",
+      "soilTypeLabel": "మట్టి రకం",
+      "cropButton": "పంట & సాగునీటిని సిఫారసు చేయండి",
+      "aidTitle": "ప్రభుత్వ సహాయం",
+      "stateLabel": "రాష్ట్రం",
+      "landLabel": "భూమి పరిమాణం (ఎకరాలు)",
+      "aidButton": "ప్రభుత్వ పథకాలను పొందండి",
+      "backButton": "వెనక్కి",
+      "resultFields": {
+        "Soil Type": "మట్టి రకం",
+        "Pest Detection": "కీటకాల గుర్తింపు",
+        "Recommended Crops": "సిఫారసు చేయబడిన పంటలు",
+        "Irrigation Status": "సాగునీటి స్థితి",
+        "Estimated Yield": "అంచనా వేసిన దిగుబడి",
+        "State": "రాష్ట్రం",
+        "Land Size": "భూమి పరిమాణం",
+        "Available Schemes": "అందుబాటులో ఉన్న పథకాలు",
+        "Eligibility": "అర్హత",
+        "Contact": "సంప్రదించండి",
+        "Note": "గమనిక",
+        "acres": "ఎకరాలు"
+      },
+      "predictionValues": {
+        "soil_type": {
+          "Alluvial": "వర్తక",
+          "Clay": "బంకమట్టి",
+          "Black": "నల్ల",
+          "Red": "ఎరుపు"
+        },
+        "pest_detection": {
+          "None": "ఏమీ లేదు",
+          "Aphids": "అఫిడ్స్",
+          "Locusts": "మిడతలు"
+        },
+        "crops": {
+          "Wheat": "గోధుమ",
+          "Rice": "వరి",
+          "Maize": "మొక్కజొన్న"
+        },
+        "irrigation": {
+          "Adequate": "సరిపోతుంది",
+          "Insufficient": "సరిపోదు"
+        },
+        "schemes": {
+          "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)": "ప్రధాన మంత్రి కిసాన్ సమ్మాన్ నిధి",
+          "Pradhan Mantri Fasal Bima Yojana (PMFBY)": "ప్రధాన మంత్రి ఫసల్ బీమా యోజన",
+          "Pradhan Mantri Krishi Sinchayee Yojana (PMKSY)": "ప్రధాన మంత్రి కృషి సించాయి యోజన",
+          "Soil Health Card Scheme": "సాయిల్ హెల్త్ కార్డ్ స్కీమ్"
+        }
+      },
+      "pest_note_template": "ఈ {soil_type} మట్టిలో ఈ {pests} కీటకాలు ఉండవచ్చు",
+      "errorMessages": {
+        "noImage": "చిత్రాన్ని ఎంచుకోండి",
+        "soilAnalysis": "మట్టిని విశ్లేషించడం విఫలమైంది",
+        "network": "నెట్‌వర్క్ లోపం",
+        "invalidNumber": "చెల్లుబాటు అయ్యే సంఖ్య అయి ఉండాలి",
+        "rangeError": "మధ్యలో ఉండాలి",
+        "and": "మరియు",
+        "noCrops": "పంటలు సిఫారసు చేయబడలేదు",
+        "notSpecified": "పేర్కొనబడలేదు",
+        "notAvailable": "అందుబాటులో లేదు",
+        "invalidAidInput": "చెల్లుబాటు అయ్యే రాష్ట్రం మరియు ప్రతికూలం కాని భూమి పరిమాణాన్ని పూరించండి",
+        "noSchemes": "పథకాలు ఏవీ కనుగొనబడలేదు",
+        "schemesFailed": "ప్రభుత్వ పథకాలను లోడ్ చేయడం విఫలమైంది",
+        "error": "లోపం",
+        "unknown": "తెలియదు"
+      },
+      "successMessages": {
+        "soilAnalysis": "మట్టి విశ్లేషణ పూర్తయింది!",
+        "cropRecommendation": "పంట సిఫారసు రూపొందించబడింది!",
+        "schemesLoaded": "ప్రభుత్వ పథకాలు లోడ్ చేయబడ్డాయి!"
+      }
+    },
+    "kn": {
+      "appTitle": "ಉಳವನ್ - ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ಸಹಾಯಕ",
+      "soilOption": "ಮಣ್ಣು & ಕೀಟ ಪತ್ತೆ",
+      "cropOption": "ಬೆಳೆ & ನೀರಾವರಿ ನಿರ್ವಹಣೆ",
+      "aidOption": "ಸರ್ಕಾರಿ ಸಹಾಯ",
+      "soilTitle": "ಮಣ್ಣು & ಕೀಟ ಪತ್ತೆ",
+      "soilImageLabel": "ಮಣ್ಣಿನ ಚಿತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+      "soilButton": "ಮಣ್ಣನ್ನು ವಿಶ್ಲೇಷಿಸಿ",
+      "cropTitle": "ಬೆಳೆ & ನೀರಾವರಿ ನಿರ್ವಹಣೆ",
+      "nitrogenLabel": "ನೈಟ್ರೋಜನ್ (N) ಮಟ್ಟ",
+      "phosphorusLabel": "ಫಾಸ್ಫರಸ್ (P) ಮಟ್ಟ",
+      "potassiumLabel": "ಪೊಟಾಷಿಯಂ (K) ಮಟ್ಟ",
+      "tempLabel": "ತಾಪಮಾನ (°C)",
+      "humidityLabel": "ಆರ್ದ್ರತೆ (%)",
+      "phLabel": "ಮಣ್ಣಿನ pH",
+      "rainfallLabel": "ಮಳೆ (ಮಿಮೀ)",
+      "soilTypeLabel": "ಮಣ್ಣಿನ ಪ್ರಕಾರ",
+      "cropButton": "ಬೆಳೆ & ನೀರಾವರಿಯನ್ನು ಶಿಫಾರಸು ಮಾಡಿ",
+      "aidTitle": "ಸರ್ಕಾರಿ ಸಹಾಯ",
+      "stateLabel": "ರಾಜ್ಯ",
+      "landLabel": "ಭೂಮಿಯ ಗಾತ್ರ (ಎಕರೆ)",
+      "aidButton": "ಸರ್ಕಾರಿ ಯೋಜನೆಗಳನ್ನು ಪಡೆಯಿರಿ",
+      "backButton": "ಹಿಂದೆ",
+      "resultFields": {
+        "Soil Type": "ಮಣ್ಣಿನ ಪ್ರಕಾರ",
+        "Pest Detection": "ಕೀಟ ಪತ್ತೆ",
+        "Recommended Crops": "ಶಿಫಾರಸು ಮಾಡಲಾದ ಬೆಳೆಗಳು",
+        "Irrigation Status": "ನೀರಾವರಿ ಸ್ಥಿತಿ",
+        "Estimated Yield": "ಅಂದಾಜು ಇಳುವರಿ",
+        "State": "ರಾಜ್ಯ",
+        "Land Size": "ಭೂಮಿಯ ಗಾತ್ರ",
+        "Available Schemes": "ಲಭ್ಯವಿರುವ ಯೋಜನೆಗಳು",
+        "Eligibility": "ಅರ್ಹತೆ",
+        "Contact": "ಸಂಪರ್ಕ",
+        "Note": "ಟಿಪ್ಪಣಿ",
+        "acres": "ಎಕರೆ"
+      },
+      "predictionValues": {
+        "soil_type": {
+          "Alluvial": "ಅಲಿವಿಯಲ್",
+          "Clay": "ಗೊಂಡಮಣ್ಣು",
+          "Black": "ಕಪ್ಪು",
+          "Red": "ಕೆಂಪು"
+        },
+        "pest_detection": {
+          "None": "ಯಾವುದೂ ಇಲ್ಲ",
+          "Aphids": "ಅಫಿಡ್ಸ್",
+          "Locusts": "ಮಿಡತೆ"
+        },
+        "crops": {
+          "Wheat": "ಗೋಧಿ",
+          "Rice": "ಅಕ್ಕಿ",
+          "Maize": "ಜೋಳ"
+        },
+        "irrigation": {
+          "Adequate": "ಸಾಕಷ್ಟು",
+          "Insufficient": "ಸಾಕಾಗಿಲ್ಲ"
+        },
+        "schemes": {
+          "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)": "ಪ್ರಧಾನ ಮಂತ್ರಿ ಕಿಸಾನ್ ಸಮ್ಮಾನ್ ನಿಧಿ",
+          "Pradhan Mantri Fasal Bima Yojana (PMFBY)": "ಪ್ರಧಾನ ಮಂತ್ರಿ ಫಸಲ್ ಬೀಮಾ ಯೋಜನ",
+          "Pradhan Mantri Krishi Sinchayee Yojana (PMKSY)": "ಪ್ರಧಾನ ಮಂತ್ರಿ ಕೃಷಿ ಸಿಂಚಾಯಿ ಯೋಜನ",
+          "Soil Health Card Scheme": "ಮಣ್ಣಿನ ಆರೋಗ್ಯ ಕಾರ್ಡ್ ಯೋಜನೆ"
+        }
+      },
+      "pest_note_template": "ಈ {soil_type} ಮಣ್ಣಿನಲ್ಲಿ ಈ {pests} ಕೀಟಗಳು ಇರಬಹುದು",
+      "errorMessages": {
+        "noImage": "ಚಿತ್ರವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+        "soilAnalysis": "ಮಣ್ಣನ್ನು ವಿಶ್ಲೇಷಿಸಲು ವಿಫಲವಾಗಿದೆ",
+        "network": "ನೆಟ್‌ವರ್ಕ್ ದೋಷ",
+        "invalidNumber": "ಮಾನ್ಯ ಸಂಖ್ಯೆಯಾಗಿರಬೇಕು",
+        "rangeError": "ನಡುವೆ ಇರಬೇಕು",
+        "and": "ಮತ್ತು",
+        "noCrops": "ಬೆಳೆಗಳನ್ನು ಶಿಫಾರಸು ಮಾಡಲಾಗಿಲ್ಲ",
+        "notSpecified": "ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ",
+        "notAvailable": "ಲಭ್ಯವಿಲ್ಲ",
+        "invalidAidInput": "ಮಾನ್ಯ ರಾಜ್ಯ ಮತ್ತು ಋಣಾತ್ಮಕವಲ್ಲದ ಭೂಮಿಯ ಗಾತ್ರವನ್ನು ಭರ್ತಿ ಮಾಡಿ",
+        "noSchemes": "ಯಾವುದೇ ಯೋಜನೆಗಳು ಸಿಗಲಿಲ್ಲ",
+        "schemesFailed": "ಸರ್ಕಾರಿ ಯೋಜನೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ",
+        "error": "ದೋಷ",
+        "unknown": "ತಿಳಿದಿಲ್ಲ"
+      },
+      "successMessages": {
+        "soilAnalysis": "ಮಣ್ಣಿನ ವಿಶ್ಲೇಷಣೆ ಪೂರ್ಣಗೊಂಡಿದೆ!",
+        "cropRecommendation": "ಬೆಳೆ ಶಿಫಾರಸು ರಚಿಸಲಾಗಿದೆ!",
+        "schemesLoaded": "ಸರ್ಕಾರಿ ಯೋಜನೆಗಳು ಲೋಡ್ ಆಗಿವೆ!"
+      }
+    },
+    "ml": {
+      "appTitle": "ഉഴവൻ - സ്മാർട്ട് കൃഷി സഹായി",
+      "soilOption": "മണ്ണ് & കീടനാശിനി കണ്ടെത്തൽ",
+      "cropOption": "വിള & ജലസേചന മാനേജ്മെന്റ്",
+      "aidOption": "സർക്കാർ സഹായങ്ങൾ",
+      "soilTitle": "മണ്ണ് & കീടനാശിനി കണ്ടെത്തൽ",
+      "soilImageLabel": "മണ്ണിന്റെ ചിത്രം അപ്‌ലോഡ് ചെയ്യുക",
+      "soilButton": "മണ്ണ് വിശകലനം ചെയ്യുക",
+      "cropTitle": "വിള & ജലസേചന മാനേജ്മെന്റ്",
+      "nitrogenLabel": "നൈട്രജൻ (N) അളവ്",
+      "phosphorusLabel": "ഫോസ്ഫറസ് (P) അളവ്",
+      "potassiumLabel": "പൊട്ടാസ്യം (K) അളവ്",
+      "tempLabel": "താപനില (°C)",
+      "humidityLabel": "ആർദ്രത (%)",
+      "phLabel": "മണ്ണിന്റെ pH",
+      "rainfallLabel": "മഴ (മില്ലിമീറ്റർ)",
+      "soilTypeLabel": "മണ്ണിന്റെ തരം",
+      "cropButton": "വിള & ജലസേചനം ശുപാർശ ചെയ്യുക",
+      "aidTitle": "സർക്കാർ സഹായങ്ങൾ",
+      "stateLabel": "സംസ്ഥാനം",
+      "landLabel": "ഭൂമിയുടെ വലുപ്പം (ഏക്കർ)",
+      "aidButton": "സർക്കാർ പദ്ധതികൾ നേടുക",
+      "backButton": "തിരികെ",
+      "resultFields": {
+        "Soil Type": "മണ്ണിന്റെ തരം",
+        "Pest Detection": "കീടനാശിനി കണ്ടെത്തൽ",
+        "Recommended Crops": "ശുപാർശ ചെയ്ത വിളകൾ",
+        "Irrigation Status": "ജലസേചന നില",
+        "Estimated Yield": "കണക്കാക്കിയ വിളവ്",
+        "State": "സംസ്ഥാനം",
+        "Land Size": "ഭൂമിയുടെ വലുപ്പം",
+        "Available Schemes": "ലഭ്യമായ പദ്ധതികൾ",
+        "Eligibility": "യോഗ്യത",
+        "Contact": "ബന്ധപ്പെടുക",
+        "Note": "കുറിപ്പ്",
+        "acres": "ഏക്കർ"
+      },
+      "predictionValues": {
+        "soil_type": {
+          "Alluvial": "അലുവിയൽ",
+          "Clay": "കളിമണ്ണ്",
+          "Black": "കറുത്ത",
+          "Red": "ചുവപ്പ്"
+        },
+        "pest_detection": {
+          "None": "ഒന്നുമില്ല",
+          "Aphids": "അഫിഡുകൾ",
+          "Locusts": "വെട്ടുകിളികൾ"
+        },
+        "crops": {
+          "Wheat": "ഗോതമ്പ്",
+          "Rice": "നെല്ല്",
+          "Maize": "ചോളം"
+        },
+        "irrigation": {
+          "Adequate": "പര്യാപ്തം",
+          "Insufficient": "പര്യാപ്തമല്ല"
+        },
+        "schemes": {
+          "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)": "പ്രധാൻ മന്ത്രി കിസാൻ സമ്മാൻ നിധി",
+          "Pradhan Mantri Fasal Bima Yojana (PMFBY)": "പ്രധാൻ മന്ത്രി ഫസൽ ബീമാ യോജന",
+          "Pradhan Mantri Krishi Sinchayee Yojana (PMKSY)": "പ്രധാൻ മന്ത്രി കൃഷി സിഞ്ചായി യോജന",
+          "Soil Health Card Scheme": "മണ്ണിന്റെ ആരോഗ്യ കാർഡ് പദ്ധതി"
+        }
+      },
+      "pest_note_template": "ഈ {soil_type} മണ്ണിൽ ഈ {pests} കീടങ്ങൾ ഉണ്ടാകാം",
+      "errorMessages": {
+        "noImage": "ചിത്രം തിരഞ്ഞെടുക്കുക",
+        "soilAnalysis": "മണ്ണ് വിശകലനം ചെയ്യാൻ കഴിഞ്ഞില്ല",
+        "network": "നെറ്റ്‌വർക്ക് പിശക്",
+        "invalidNumber": "സാധുവായ സംഖ്യ ആയിരിക്കണം",
+        "rangeError": "നടുവിൽ ആയിരിക്കണം",
+        "and": "ഒപ്പം",
+        "noCrops": "വിളകൾ ശുപാർശ ചെയ്തിട്ടില്ല",
+        "notSpecified": "നിർദ്ദിഷ്ടപ്പെടുത്തിയിട്ടില്ല",
+        "notAvailable": "ലഭ്യമല്ല",
+        "invalidAidInput": "സാധുവായ സംസ്ഥാനവും നെഗറ്റീവ് അല്ലാത്ത ഭൂമിയുടെ വലുപ്പവും പൂരിപ്പിക്കുക",
+        "noSchemes": "പദ്ധതികൾ ഒന്നും കണ്ടെത്തിയില്ല",
+        "schemesFailed": "സർക്കാർ പദ്ധതികൾ ലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല",
+        "error": "പിശക്",
+        "unknown": "അറിയില്ല"
+      },
+      "successMessages": {
+        "soilAnalysis": "മണ്ണ് വിശകലനം പൂർത്തിയായി!",
+        "cropRecommendation": "വിള ശുപാർശ ഉണ്ടാക്കി!",
+        "schemesLoaded": "സർക്കാർ പദ്ധതികൾ ലോഡ് ചെയ്തു!"
+      }
+    },
+  "hi": {
+  "appTitle": "उज़वन - स्मार्ट खेती सहायक",
+  "soilOption": "मिट्टी और कीट पहचान",
+  "cropOption": "फसल और सिंचाई प्रबंधन",
+  "aidOption": "सरकारी सहायता",
+  "soilTitle": "मिट्टी और कीट पहचान",
+  "soilImageLabel": "मिट्टी की छवि अपलोड करें",
+  "soilButton": "मिट्टी का विश्लेषण करें",
+  "cropTitle": "फसल और सिंचाई प्रबंधन",
+  "nitrogenLabel": "नाइट्रोजन (N) स्तर",
+  "phosphorusLabel": "फॉस्फोरस (P) स्तर",
+  "potassiumLabel": "पोटैशियम (K) स्तर",
+  "tempLabel": "तापमान (°C)",
+  "humidityLabel": "आर्द्रता (%)",
+  "phLabel": "मिट्टी का pH",
+  "rainfallLabel": "वर्षा (मिमी)",
+  "soilTypeLabel": "मिट्टी का प्रकार",
+  "cropButton": "फसल और सिंचाई की सिफारिश करें",
+  "aidTitle": "सरकारी सहायता",
+  "stateLabel": "राज्य",
+  "landLabel": "भूमि आकार (एकड़)",
+  "aidButton": "सरकारी योजनाएं प्राप्त करें",
+  "backButton": "वापस",
+  "resultFields": {
+    "Soil Type": "मिट्टी का प्रकार",
+    "Pest Detection": "कीट पहचान",
+    "Recommended Crops": "सिफारिश की गई फसलें",
+    "Irrigation Status": "सिंचाई की स्थिति",
+    "Estimated Yield": "अनुमानित उपज",
+    "State": "राज्य",
+    "Land Size": "भूमि आकार",
+    "Available Schemes": "उपलब्ध योजनाएं",
+    "Eligibility": "पात्रता",
+    "Contact": "संपर्क",
+    "Note": "नोट",
+    "acres": "एकड़"
+  },
+  "predictionValues": {
+    "soil_type": {
+      "Alluvial": "जलोढ़",
+      "Clay": "मृत्तिका",
+      "Black": "काली",
+      "Red": "लाल"
+    },
+    "pest_detection": {
+      "None": "कोई नहीं",
+      "Aphids": "एफिड्स",
+      "Locusts": "टिड्डियाँ"
+    },
+    "crops": {
+      "Wheat": "गेहूं",
+      "Rice": "चावल",
+      "Maize": "मक्का"
+    },
+    "irrigation": {
+      "Adequate": "पर्याप्त",
+      "Insufficient": "अपर्याप्त"
+    },
+    "schemes": {
+      "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)": "प्रधानमंत्री किसान सम्मान निधि (PM-KISAN)",
+      "Pradhan Mantri Fasal Bima Yojana (PMFBY)": "प्रधानमंत्री फसल बीमा योजना (PMFBY)",
+      "Pradhan Mantri Krishi Sinchayee Yojana (PMKSY)": "प्रधानमंत्री कृषि सिंचाई योजना (PMKSY)",
+      "Soil Health Card Scheme": "मिट्टी स्वास्थ्य कार्ड योजना"
+    }
+  },
+  "pest_note_template": "इस {soil_type} में ये कीट हो सकते हैं: {pests}",
+  "errorMessages": {
+    "noImage": "कृपया एक छवि चुनें",
+    "soilAnalysis": "मिट्टी का विश्लेषण विफल रहा",
+    "network": "नेटवर्क त्रुटि",
+    "invalidNumber": "एक मान्य संख्या होनी चाहिए",
+    "rangeError": "होना चाहिए के बीच",
+    "and": "और",
+    "noCrops": "कोई फसल अनुशंसित नहीं",
+    "notSpecified": "निर्दिष्ट नहीं",
+    "notAvailable": "उपलब्ध नहीं",
+    "invalidAidInput": "कृपया सभी फ़ील्ड को एक मान्य राज्य और गैर-नकारात्मक भूमि आकार के साथ भरें",
+    "noSchemes": "कोई योजना नहीं मिली",
+    "schemesFailed": "सरकारी योजनाओं को लोड करने में विफल",
+    "error": "त्रुटि",
+    "unknown": "अज्ञात"
+  },
+  "successMessages": {
+    "soilAnalysis": "मिट्टी का विश्लेषण पूरा हुआ!",
+    "cropRecommendation": "फसल की सिफारिश तैयार!",
+    "schemesLoaded": "सरकारी योजनाएं लोड हो गईं!"
+  }
+}
+
+  }

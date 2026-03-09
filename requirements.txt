@@ -1,0 +1,16 @@
+Flask
+flask-cors
+torch
+torchvision
+Pillow
+joblib
+pandas
+numpy
+bcrypt
+google-generativeai
+gTTS
+scikit-learn
+gunicorn
+pymongo 
+python-dotenv
+pymongo[srv]==3.12

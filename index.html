@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Uzhavan</title>
+  <link rel="icon" href="{{ url_for('static', filename='images/uzhavan.ico') }}" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}"/>
+  <style>
+    body {
+      position: relative;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    /* 3-Column Image System */
+    .image-mosaic {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      z-index: -1;
+    }
+    
+    .mosaic-column {
+      flex: 1;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .mosaic-column img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+      filter: brightness(0.9);
+    }
+    
+    .mosaic-column img.active {
+      opacity: 1;
+    }
+    
+    /* Enhanced Green Overlay */
+    .green-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(16, 120, 19, 0.3);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Container Styles */
+    .container {
+      background-color: rgba(255, 255, 255, 0.85);
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(5px);
+      margin: 2rem auto;
+      max-width: 900px;
+      padding: 2rem;
+      position: relative;
+    }
+
+    /* Video Overlay Styles */
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Video Selection Container */
+    .video-selection {
+      background: linear-gradient(145deg, #e8f5e9, #dcedc8);
+      border-radius: 25px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      max-width: 1000px;
+      width: 95%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      padding: 3.5rem;
+      animation: zoomIn 0.5s ease-out;
+      border: 2px solid rgba(39, 174, 96, 0.4);
+      transition: background 0.3s ease;
+    }
+
+    .video-selection:hover {
+      background: linear-gradient(145deg, #dcedc8, #c8e6c9);
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Hero Header */
+    .video-selection-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      padding: 2rem;
+      background: url('https://t3.ftcdn.net/jpg/03/40/70/04/360_F_340700428_AquH6hbzeMOYLQ6g6kfWAMuUvfw60Zd1.jpg') center/cover no-repeat;
+      background-blend-mode: overlay;
+      background-color: rgba(39, 174, 96, 0.3);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .video-selection-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1));
+    }
+
+    .video-selection-header h2 {
+      margin: 0;
+      font-size: 2.5rem;
+      color: #fff;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+      position: relative;
+      z-index: 1;
+      font-weight: 700;
+      animation: fadeInText 1s ease-out;
+    }
+
+    @keyframes fadeInText {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Language Selection */
+    .language-selector {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 1.5rem;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .language-btn {
+      background: linear-gradient(145deg, #2ecc71, #27ae60);
+      border: none;
+      padding: 14px 28px;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 35px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .language-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: 0.6s;
+      z-index: -1;
+    }
+
+    .language-btn:hover {
+      background: linear-gradient(145deg, #27ae60, #219653);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(39, 174, 96, 0.6);
+    }
+
+    .language-btn:hover::before {
+      left: 100%;
+    }
+
+    .language-btn.active {
+      background: linear-gradient(145deg, #219653, #1b773f);
+      box-shadow: 0 10px 30px rgba(39, 174, 96, 0.7);
+      transform: scale(1.1);
+      border: 2px solid #00695c; /* Deep teal accent */
+    }
+
+    /* Video List */
+  .video-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    padding: 0 1.5rem;
+  }
+
+  .video-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    position: relative;
+    border: 2px solid rgba(39, 174, 96, 0.3);
+    perspective: 1000px;
+  }
+
+  .video-card:hover {
+    transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    border: 2px solid #00695c;
+  }
+
+  /* Removed .video-card img block */
+
+  .video-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* reduced height to minimize impact */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .video-card:hover .video-card-overlay {
+    opacity: 1;
+  }
+
+  .video-card-overlay i {
+    color: #00695c;
+    font-size: 4rem;
+    text-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  .video-card-content {
+    padding: 2rem;
+    text-align: center;
+    background: linear-gradient(to bottom, #ffffff, #f9fbe7);
+  }
+
+  .video-card-content h3 {
+    margin: 0;
+    font-size: 1.6rem;
+    color: #1a2223;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+  }
+
+  .video-card-content p {
+    margin: 0.8rem 0 0;
+    font-size: 1.1rem;
+    color: #555;
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.5;
+  }
+
+  /* Player, Controls, Scrollbars etc. unchanged below */
+  .video-player {
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    background: #1c2526;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    display: none;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .video-player.active {
+    display: block;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .video-player video {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+    padding: 20px 15px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: opacity 0.3s ease;
+    opacity: 0.8;
+  }
+
+  .video-player:hover .video-controls {
+    opacity: 1;
+  }
+
+  .video-control-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.6rem;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .video-control-btn:hover {
+    color: #00897b;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .video-control-btn:focus {
+    outline: 3px solid rgba(255, 255, 255, 0.6);
+    outline-offset: 3px;
+  }
+
+  .video-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    transition: all 0.3s ease;
+    z-index: 1;
+  }
+
+  .video-close:hover {
+    background: rgba(255, 0, 0, 0.9);
+    transform: scale(1.2);
+  }
+
+  .video-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    color: #00695c;
+    font-size: 1.4rem;
+    text-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+  }
+
+  .video-loading.active {
+    display: flex;
+  }
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.4);
+    border-top: 5px solid #00695c;
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 1024px) {
+    .video-selection {
+      max-width: 90%;
+      padding: 2.5rem;
+    }
+
+    .video-list {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .video-selection-header h2 {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .video-player, .video-selection {
+      width: 98%;
+    }
+
+    .video-list {
+      grid-template-columns: 1fr;
+    }
+
+    .language-btn {
+      padding: 12px 20px;
+      font-size: 1.1rem;
+    }
+
+    .video-selection-header h2 {
+      font-size: 1.8rem;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .video-card-content h3 {
+      font-size: 1.4rem;
+    }
+
+    .video-controls {
+      padding: 15px 10px 10px;
+    }
+
+    .video-control-btn {
+      font-size: 1.4rem;
+      padding: 10px 14px;
+    }
+
+    .video-selection {
+      padding: 2rem;
+    }
+  }
+
+  .video-selection::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  .video-selection::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+  }
+
+  .video-selection::-webkit-scrollbar-thumb {
+    background: #2ecc71;
+    border-radius: 6px;
+  }
+  </style>
+</head>
+<body>
+  <!-- 3-Column Image Background System -->
+  <div class="image-mosaic">
+    <div class="mosaic-column" id="col1">
+      <img class="active" src="{{ url_for('static', filename='images/image1.jpg') }}" alt="Farm image 1">
+      <img src="{{ url_for('static', filename='images/image2.jpg') }}" alt="Farm image 2">
+      <img src="{{ url_for('static', filename='images/image3.jpg') }}" alt="Farm image 3">
+    </div>
+    <div class="mosaic-column" id="col2">
+      <img class="active" src="{{ url_for('static', filename='images/image4.jpg') }}" alt="Farm image 4">
+      <img src="{{ url_for('static', filename='images/image5.jpg') }}" alt="Farm image 5">
+      <img src="{{ url_for('static', filename='images/image6.jpg') }}" alt="Farm image 6">
+    </div>
+    <div class="mosaic-column" id="col3">
+      <img class="active" src="{{ url_for('static', filename='images/image7.jpg') }}" alt="Farm image 7">
+      <img src="{{ url_for('static', filename='images/image8.jpg') }}" alt="Farm image 8">
+      <img src="{{ url_for('static', filename='images/image9.jpg') }}" alt="Farm image 9">
+    </div>
+  </div>
+  
+  <!-- Green Overlay System -->
+  <div class="green-overlay"></div>
+  <div class="farmer-overlay"></div>
+
+  <div class="container" id="mainContainer">
+    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+      <img src="{{ url_for('static', filename='images/uzhavanre.png') }}" alt="Uzhavan Logo" style="width: 140px; height: 140px; transition: transform 0.3s ease; margin-right: 20px;">
+      <h1 id="appTitle" style="margin: 0;">Uzhavan</h1>
+    </div>
+
+    <div class="language-select">
+      <label for="language">Select Language</label>
+      <select id="language" onchange="changeLanguage()">
+        <option value="ta">தமிழ் (Tamil)</option>
+        <option value="ml">മലയാളം (Malayalam)</option>
+        <option value="te">తెలుగు (Telugu)</option>
+        <option value="kn">ಕನ್ನಡ (Kannada)</option>
+        <option value="hi">हिंदी (Hindi)</option>
+        <option value="en" selected>English</option>
+      </select>
+    </div>
+
+    <div id="options">
+      <div class="option" id="soilOption" onclick="showForm('soil_prediction')">Soil & Pest Detection</div>
+      <div class="option" id="cropOption" onclick="showForm('crop_mgmt')">Crop & Irrigation Management</div>
+      <div class="option" id="aidOption" onclick="showForm('govt_aid')">Government Aids</div>
+    </div>
+
+    <!-- Soil Prediction Form -->
+    <div id="soil_prediction" class="hidden">
+      <h3 id="soilTitle">Soil & Pest Detection</h3>
+      <form id="soilForm">
+        <div class="form-group">
+          <label id="soilImageLabel" for="soilImage">Upload Soil Image</label>
+          <input type="file" id="soilImage" accept="image/*" required>
+        </div>
+        <button type="submit" class="button predict-button" id="soilButton">Analyze Soil</button>
+      </form>
+      <div class="image-container">
+        <img src="https://t3.ftcdn.net/jpg/03/40/70/04/360_F_340700428_AquH6hbzeMOYLQ6g6kfWAMuUvfw60Zd1.jpg" alt="Farming Scene">
+      </div>
+      <div class="loading" id="soilLoading">Analyzing soil image...</div>
+      <div id="soilResult" class="result"><h2 style="text-align: center;">Result</h2></div>
+      <button onclick="goBack()" class="button back-button" id="backButton1">Back</button>
+    </div>
+
+    <!-- Crop Management Form -->
+    <div id="crop_mgmt" class="hidden">
+      <h3 id="cropTitle">Crop & Irrigation Management</h3>
+      <form id="cropForm">
+        <div class="form-group">
+          <label id="nitrogenLabel" for="nitrogen">Nitrogen (N) Level</label>
+          <input type="number" id="nitrogen" placeholder="Enter nitrogen level" required step="0.01">
+        </div>
+        <div class="form-group">
+          <label id="phosphorusLabel" for="phosphorus">Phosphorus (P) Level</label>
+          <input type="number" id="phosphorus" placeholder="Enter phosphorus level" required step="0.01">
+        </div>
+        <div class="form-group">
+          <label id="potassiumLabel" for="potassium">Potassium (K) Level</label>
+          <input type="number" id="potassium" placeholder="Enter potassium level" required step="0.01">
+        </div>
+        <div class="form-group">
+          <label id="tempLabel" for="temperature">Temperature (°C)</label>
+          <input type="number" id="temperature" placeholder="Enter temperature" required step="0.1">
+        </div>
+        <div class="form-group">
+          <label id="humidityLabel" for="humidity">Humidity (%)</label>
+          <input type="number" id="humidity" placeholder="Enter humidity percentage" required step="0.1">
+        </div>
+        <div class="form-group">
+          <label id="phLabel" for="ph">Soil pH</label>
+          <input type="number" id="ph" placeholder="Enter soil pH (0-14)" required min="0" max="14" step="0.1">
+        </div>
+        <div class="form-group">
+          <label id="rainfallLabel" for="rainfall">Rainfall (mm)</label>
+          <input type="number" id="rainfall" placeholder="Enter rainfall in mm" required step="0.1">
+        </div>
+        <div class="form-group">
+          <label id="soilTypeLabel" for="soil_type">Soil Type</label>
+          <select id="soil_type" required>
+            <option value="Alluvial">Alluvial</option>
+            <option value="Black">Black</option>
+            <option value="Clay">Clay</option>
+            <option value="Red">Red</option>
+          </select>
+        </div>
+        <button type="submit" class="button predict-button" id="cropButton">Recommend Crop & Irrigation</button>
+      </form>
+      <div class="image-container">
+        <img src="https://t3.ftcdn.net/jpg/03/40/70/04/360_F_340700428_AquH6hbzeMOYLQ6g6kfWAMuUvfw60Zd1.jpg" alt="Farming Scene">
+      </div>
+      <div class="loading" id="cropLoading">Analyzing soil conditions...</div>
+      <div id="cropResult" class="result"><h2 style="text-align: center;">Result</h2></div>
+      <button onclick="goBack()" class="button back-button" id="backButton2">Back</button>
+    </div>
+
+    <!-- Government Aid Form -->
+    <div id="govt_aid" class="hidden">
+      <h3 id="aidTitle">Government Aids</h3>
+      <form id="aidForm">
+        <div class="form-group">
+          <label id="stateLabel" for="state">State</label>
+          <input type="text" id="state" placeholder="Enter your state" required>
+        </div>
+        <div class="form-group">
+          <label id="landLabel" for="land_size">Land Size (acres)</label>
+          <input type="number" id="land_size" placeholder="Enter land size in acres" required min="0" step="0.1">
+        </div>
+        <button type="submit" class="button predict-button" id="aidButton">Get Government Schemes</button>
+      </form>
+      <div class="image-container">
+        <img src="https://t3.ftcdn.net/jpg/03/40/70/04/360_F_340700428_AquH6hbzeMOYLQ6g6kfWAMuUvfw60Zd1.jpg" alt="Farming Scene">
+      </div>
+      <div class="loading" id="aidLoading">Searching for government schemes...</div>
+      <div id="aidResult" class="result"><h2 style="text-align: center;">Result</h2></div>
+      <button onclick="goBack()" class="button back-button" id="backButton3">Back</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Chatbot Launcher (Farmer Icon) -->
+  <div id="chatbotLauncher" style="
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 10000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  ">
+    <img src="{{ url_for('static', filename='images/farmer.png') }}" alt="Chatbot" style="width: 100%; height: 100%; object-fit: cover;" />
+  </div>
+
+  <iframe id="chatbotFrame" src="chatindex.html" style="
+    position: fixed;
+    bottom: 100px;
+    left: 20px;
+    width: 380px;
+    height: 80vh;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    z-index: 9999;
+    display: none;
+  "></iframe>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script>
+    // Enhanced Column Rotation System for 9 images (3 columns × 3 images)
+    function initColumn(columnId) {
+      const column = document.getElementById(columnId);
+      const images = column.querySelectorAll('img');
+      let current = 0;
+      
+      const rotate = () => {
+        images[current].classList.remove('active');
+        current = (current + 1) % images.length;
+        images[current].classList.add('active');
+        setTimeout(rotate, 4000 + Math.random() * 3000);
+      };
+      setTimeout(rotate, Math.random() * 3000);
+    }
+
+    initColumn('col1');
+    initColumn('col2');
+    initColumn('col3');
+
+    // Chatbot and Video Functionality
+    const chatbotFrame = document.getElementById('chatbotFrame');
+    const chatbotLauncher = document.getElementById('chatbotLauncher');
+    const languageSelect = document.getElementById('language');
+    let videoOverlay = null;
+    let videoPlayer = null;
+    let videoSelection = null;
+
+    chatbotLauncher.addEventListener('click', () => {
+      const isVisible = chatbotFrame.style.display === 'block';
+      chatbotFrame.style.display = isVisible ? 'none' : 'block';
+    });
+
+    chatbotFrame.addEventListener('load', () => {
+      chatbotFrame.contentWindow.postMessage({
+        type: 'init',
+        language: languageSelect.value
+      }, '*');
+    });
+
+    languageSelect.addEventListener('change', () => {
+      chatbotFrame.contentWindow.postMessage({
+        type: 'languageUpdate',
+        language: languageSelect.value
+      }, '*');
+      if (videoSelection) {
+        updateVideoSelection(languageSelect.value);
+      }
+    });
+
+    window.addEventListener('message', (event) => {
+      switch (event.data.type) {
+        case 'closeChatbot':
+          chatbotFrame.style.display = 'none';
+          break;
+        case 'playVideo':
+          openVideoSelection();
+          break;
+        case 'sendMessage':
+          if (event.data.message.includes('Show soil prediction')) {
+            showForm('soil_prediction');
+          } else if (event.data.message.includes('Show crop mgmt')) {
+            showForm('crop_mgmt');
+          } else if (event.data.message.includes('Show govt aid')) {
+            showForm('govt_aid');
+          }
+          break;
+      }
+    });
+
+    function openVideoSelection() {
+      videoOverlay = document.createElement('div');
+      videoOverlay.className = 'video-overlay';
+      
+      videoSelection = document.createElement('div');
+      videoSelection.className = 'video-selection';
+
+      // Header
+      const header = document.createElement('div');
+      header.className = 'video-selection-header';
+      header.innerHTML = '<h2>Discover Agricultural Knowledge</h2>';
+      videoSelection.appendChild(header);
+
+      // Language Buttons
+      const languageSelector = document.createElement('div');
+      languageSelector.className = 'language-selector';
+      const languages = [
+        { code: 'ta', name: 'தமிழ்' },
+        { code: 'en', name: 'English' },
+        { code: 'hi', name: 'हिंदी' },
+        { code: 'ml', name: 'മലയാളം' },
+        { code: 'te', name: 'తెలుగు' },
+        { code: 'kn', name: 'ಕನ್ನಡ' }
+      ];
+
+      languages.forEach(lang => {
+        const button = document.createElement('button');
+        button.className = 'language-btn';
+        button.textContent = lang.name;
+        button.dataset.lang = lang.code;
+        button.setAttribute('aria-label', `Select ${lang.name} language`);
+        if (lang.code === languageSelect.value) {
+          button.classList.add('active');
+        }
+        button.addEventListener('click', () => {
+          document.querySelectorAll('.language-btn').forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+          updateVideoSelection(lang.code);
+        });
+        languageSelector.appendChild(button);
+      });
+
+      videoSelection.appendChild(languageSelector);
+
+      // Video List
+      const videoList = document.createElement('div');
+      videoList.className = 'video-list';
+      videoSelection.appendChild(videoList);
+
+      // Loading Animation
+      const loading = document.createElement('div');
+      loading.className = 'video-loading';
+      loading.innerHTML = `
+        <div class="spinner"></div>
+        <span>Loading videos...</span>
+      `;
+      videoSelection.appendChild(loading);
+
+      // Close Button
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'video-close';
+      closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+      closeBtn.setAttribute('aria-label', 'Close video selection');
+      closeBtn.addEventListener('click', closeVideoPlayer);
+      videoSelection.appendChild(closeBtn);
+
+      videoOverlay.appendChild(videoSelection);
+      document.body.appendChild(videoOverlay);
+
+      // Initial video list population
+      updateVideoSelection(languageSelect.value);
+    }
+
+    function updateVideoSelection(lang) {
+      const videoList = videoSelection.querySelector('.video-list');
+      const loading = videoSelection.querySelector('.video-loading');
+      videoList.style.opacity = '0';
+      loading.classList.add('active');
+
+      setTimeout(() => {
+  videoList.innerHTML = '';
+  const videoData = {
+    ta: [
+      { name: 'வேளாண்மை அறிமுகம்', src: 'videos/sand to soil.mp4', desc: 'மண்ணின் அடிப்படைகளை அறிக' },
+      { name: 'அறுவடை', src: 'videos/introduction to farming_hindi.mp4', desc: 'பயிர் அறுவடை நுட்பங்கள்' },
+      { name: 'மண் மேலாண்மை', src: 'videos/soiltesting tamil.mp4', desc: 'மண்ணின் தரத்தை மேம்படுத்துதல்' },
+      { name: 'பூச்சி கட்டுப்பாடு', src: 'videos/pestdetection - Made with Clipchamp.mp4', desc: 'பயிர்களை பூச்சிகளிலிருந்து பாதுகாத்தல்' },
+      { name: 'அரசு திட்டங்கள்', src: 'videos/govt schemes.mp4', desc: 'விவசாயிகளுக்கான அரசு ஆதரவு' }
+    ],
+    en: [
+      { name: 'Introduction to Agriculture', src: 'videos/Agriculture.mp4', desc: 'Learn the basics of soil and farming' },
+      { name: 'Harvesting', src: 'videos/How to Do Harvesting  Quick Guide for Farmers_free.mp4', desc: 'Techniques for crop harvesting' },
+      { name: 'Soil Management', src: 'videos/Smart Soil Management Boost Your Crop Health in 60 Seconds_free.mp4', desc: 'Improving soil quality' },
+      { name: 'Pest Control', src: 'videos/Pest Control Tips Every Farmer Should Know_free.mp4', desc: 'Protecting crops from pests' },
+      { name: 'Government Schemes', src: 'videos/Know Your Benefits Government Schemes for Farmers (2025)_free.mp4', desc: 'Support programs for farmers' }
+    ],
+    hi: [
+      { name: 'कृषि का परिचय', src: 'videos/Aruvadai_Tamil.mp4', desc: 'मिट्टी और खेती की मूल बातें' },
+      { name: 'कटाई', src: 'videos/harvest_hindi.mp4', desc: 'फसल कटाई की तकनीकें' },
+      { name: 'मिट्टी प्रबंधन', src: 'videos/soilmangement_hindi.mp4', desc: 'मिट्टी की गुणवत्ता में सुधार' },
+      { name: 'कीट नियंत्रण', src: 'videos/pest_hindi.mp4', desc: 'फसलों को कीटों से बचाना' },
+      { name: 'सरकारी योजनाएँ', src: 'videos/schemes_Hindi.mp4', desc: 'किसानों के लिए समर्थन कार्यक्रम' }
+    ],
+    ml: [
+      { name: 'കൃഷിയിലേക്കുള്ള ആമുഖം', src: 'videos/ml/sand to soil.mp4', desc: 'മണ്ണിന്റെയും കൃഷിയുടെയും അടിസ്ഥാനങ്ങൾ' },
+      { name: 'വിളവെടുപ്പ്', src: 'videos/ml/Agriculture.mp4', desc: 'വിളവെടുപ്പ് സാങ്കേതികതകൾ' },
+      { name: 'മണ്ണ് മാനേജ്മെന്റ്', src: 'videos/ml/soiltesting tamil.mp4', desc: 'മണ്ണിന്റെ ഗുണനിലവാരം മെച്ചപ്പെടുത്തൽ' },
+      { name: 'കീടനിയന്ത്രണം', src: 'videos/ml/pestdetection - Made with Clipchamp.mp4', desc: 'വിളകളെ കീടങ്ങളിൽ നിന്ന് സംരക്ഷിക്കൽ' },
+      { name: 'സർക്കാർ പദ്ധതികൾ', src: 'videos/ml/govt schemes.mp4', desc: 'കർഷകർക്കുള്ള പിന്തുണാ പദ്ധതികൾ' }
+    ],
+    te: [
+      { name: 'వ్యవసాయ పరిచయం', src: 'videos/te/sand to soil.mp4', desc: 'మట్టి మరియు వ్యవసాయ ఆధారాలు' },
+      { name: 'పంట సేకరణ', src: 'videos/te/Agriculture.mp4', desc: 'పంట సేకరణ టెక్నిక్‌లు' },
+      { name: 'మట్టి నిర్వహణ', src: 'videos/te/soiltesting tamil.mp4', desc: 'మట్టి నాణ్యతను మెరుగుపరచడం' },
+      { name: 'పురుగుల నియంత్రణ', src: 'videos/te/pestdetection - Made with Clipchamp.mp4', desc: 'పంటలను పురుగుల నుండి రక్షించడం' },
+      { name: 'ప్రభుత్వ పథకాలు', src: 'videos/te/govt schemes.mp4', desc: 'రైతులకు మద్దతు కార్యక్రమాలు' }
+    ],
+    kn: [
+      { name: 'ಕೃಷಿಗೆ ಪರಿಚಯ', src: 'videos/kn/sand to soil.mp4', desc: 'ಮಣ್ಣು ಮತ್ತು ಕೃಷಿಯ ಮೂಲಭೂತ ವಿಷಯಗಳು' },
+      { name: 'ಕೊಯ್ಲು', src: 'videos/kn/Agriculture.mp4', desc: 'ಬೆಳೆ ಕೊಯಿಲು ತಂತ್ರಗಳು' },
+      { name: 'ಮಣ್ಣಿನ ನಿರ್ವಹಣೆ', src: 'videos/kn/soiltesting tamil.mp4', desc: 'ಮಣ್ಣಿನ ಗುಣಮಟ್ಟವನ್ನು ಸುಧಾರಿಸುವುದು' },
+      { name: 'ಕೀಟ ನಿಯಂತ್ರಣ', src: 'videos/kn/pestdetection - Made with Clipchamp.mp4', desc: 'ಬೆಳೆಗಳನ್ನು ಕೀಟಗಳಿಂದ ರಕ್ಷಿಸುವುದು' },
+      { name: 'ಸರ್ಕಾರಿ ಯೋಜನೆಗಳು', src: 'videos/kn/govt schemes.mp4', desc: 'ರೈತರಿಗೆ ಬೆಂಬಲ ಕಾರ್ಯಕ್ರಮಗಳು' }
+    ]
+  };
+
+  const videos = videoData[lang] || videoData['en'];
+  videos.forEach(video => {
+    const card = document.createElement('div');
+    card.className = 'video-card';
+    card.innerHTML = `
+      <div class="video-card-overlay">
+        <i class="fas fa-play-circle"></i>
+      </div>
+      <div class="video-card-content">
+        <h3>${video.name}</h3>
+        <p>${video.desc}</p>
+      </div>
+    `;
+    card.setAttribute('aria-label', `Play video: ${video.name}`);
+    card.addEventListener('click', () => {
+      openVideoPlayer(video.src);
+    });
+    videoList.appendChild(card);
+  });
+
+  loading.classList.remove('active');
+  videoList.style.opacity = '1';
+  videoList.style.transition = 'opacity 0.5s ease';
+}, 500); // Simulate loading delay
+    }
+
+    function openVideoPlayer(videoSrc) {
+      if (videoSelection) {
+        videoSelection.remove();
+        videoSelection = null;
+      }
+
+      videoPlayer = document.createElement('div');
+      videoPlayer.className = 'video-player active';
+
+      const video = document.createElement('video');
+      video.src = videoSrc;
+      video.controls = false;
+      video.autoplay = false;
+      video.onloadeddata = () => {
+        console.log('Video loaded successfully');
+      };
+      video.onerror = () => {
+        console.error('Failed to load video');
+        alert('Failed to load video. Please try again or use a different video URL.');
+      };
+      videoPlayer.appendChild(video);
+
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'video-close';
+      closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+      closeBtn.setAttribute('aria-label', 'Close video player');
+      closeBtn.addEventListener('click', closeVideoPlayer);
+      videoPlayer.appendChild(closeBtn);
+
+      const controls = document.createElement('div');
+      controls.className = 'video-controls';
+
+      const playPauseBtn = document.createElement('button');
+      playPauseBtn.className = 'video-control-btn';
+      playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+      playPauseBtn.setAttribute('aria-label', 'Play/Pause video');
+      playPauseBtn.addEventListener('click', () => {
+        if (video.paused) {
+          video.play().catch(error => {
+            console.error('Video play failed:', error);
+            alert('Failed to play video. Please check browser permissions.');
+          });
+          playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        } else {
+          video.pause();
+          playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        }
+      });
+
+      controls.appendChild(playPauseBtn);
+      videoPlayer.appendChild(controls);
+
+      videoOverlay.appendChild(videoPlayer);
+    }
+
+    function closeVideoPlayer() {
+      if (videoOverlay) {
+        const video = videoOverlay.querySelector('video');
+        if (video) {
+          video.pause();
+        }
+        videoOverlay.remove();
+        videoOverlay = null;
+        videoPlayer = null;
+        videoSelection = null;
+      }
+    }
+
+    function showForm(formId) {
+      document.getElementById('options').style.display = 'none';
+      document.getElementById('soil_prediction').classList.add('hidden');
+      document.getElementById('crop_mgmt').classList.add('hidden');
+      document.getElementById('govt_aid').classList.add('hidden');
+      document.getElementById(formId).classList.remove('hidden');
+    }
+
+    function goBack() {
+      document.getElementById('options').style.display = 'block';
+      document.getElementById('soil_prediction').classList.add('hidden');
+      document.getElementById('crop_mgmt').classList.add('hidden');
+      document.getElementById('govt_aid').classList.add('hidden');
+    }
+  </script>
+  <script>
+    (function () {
+        function c() {
+            var b = a.contentDocument || a.contentWindow.document;
+            if (b) {
+                var d = b.createElement('script');
+                d.innerHTML = `
+                    window.__CF$cv$params = {
+                        r: '9366e1f639774566',
+                        t: 'MTc0NTY3ODkyMy4wMDAwMDA='
+                    };
+                    var a = document.createElement('script');
+                    a.nonce = '';
+                    a.src = '/cdn-cgi/challenge-platform/scripts/jsd/main.js';
+                    document.getElementsByTagName('head')[0].appendChild(a);
+                `;
+                b.getElementsByTagName('head')[0].appendChild(d);
+            }
+        }
+        
+        if (document.body) {
+            var a = document.createElement('iframe');
+            a.height = 1;
+            a.width = 1;
+            a.style.position = 'absolute';
+            a.style.top = 0;
+            a.style.left = 0;
+            a.style.border = 'none';
+            a.style.visibility = 'hidden';
+            document.body.appendChild(a);
+    
+            if (document.readyState !== 'loading') {
+                c();
+            } else if (window.addEventListener) {
+                document.addEventListener('DOMContentLoaded', c);
+            } else {
+                var e = document.onreadystatechange || function () {};
+                document.onreadystatechange = function (b) {
+                    e(b);
+                    if (document.readyState !== 'loading') {
+                        document.onreadystatechange = e;
+                        c();
+                    }
+                };
+            }
+        }
+    })();
+    </script>
+</body>
+</html>

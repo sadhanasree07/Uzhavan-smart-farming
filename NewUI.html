@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uzhavan - Smart Farming Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            text-align: center;
+            background: url('https://source.unsplash.com/800x600/?farm,agriculture') no-repeat center center/cover;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            margin: 20px 0;
+        }
+        h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #2E7D32;
+        }
+        .option {
+            padding: 20px;
+            margin: 12px 0;
+            background: linear-gradient(135deg, #FFA726, #E65100);
+            cursor: pointer;
+            border-radius: 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 22px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .hidden { display: none; }
+        .form-group { 
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .button {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            margin-top: 15px;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .predict-button { 
+            background: #4CAF50; 
+            color: white; 
+        }
+        .predict-button:hover {
+            background: #388E3C;
+        }
+        .back-button { 
+            background: #d32f2f; 
+            color: white;
+            margin-top: 10px;
+        }
+        .back-button:hover {
+            background: #b71c1c;
+        }
+        .language-select {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        #result {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: left;
+            border-left: 4px solid #4CAF50;
+        }
+        .result-item {
+            margin-bottom: 10px;
+        }
+        .result-title {
+            font-weight: bold;
+            color: #2E7D32;
+        }
+        .loading {
+            display: none;
+            margin: 20px 0;
+            color: #2E7D32;
+            font-weight: bold;
+        }
+        .error {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        
+        .farmer-bot {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        display: flex;
+        align-items: flex-end;
+        z-index: 999;
+        animation: popIn 0.6s ease-out;
+        }
+
+        .farmer-img {
+        width: 80px;
+        height: auto;
+        margin-right: 10px;
+        }
+
+        .speech-bubble {
+        background-color: #fffbe6;
+        border-radius: 10px;
+        padding: 12px;
+        max-width: 260px;
+        font-size: 14px;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        animation: fadeInText 0.5s ease-in-out;
+        }
+
+        @keyframes popIn {
+        from { transform: scale(0); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeInText {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 id="appTitle">🌿 Uzhavan 🤖</h2>
+        <div class="language-select">
+            <label id="languageLabel" for="language">🌐 Select Language:</label>
+            <select id="language" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="te">తెలుగు (Telugu)</option>
+                <option value="ta">தமிழ் (Tamil)</option>
+                <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                <option value="ml">മലയാളം (Malayalam)</option>
+            </select>
+        </div>
+        
+        <div id="options">
+            <div class="option" id="soilOption" onclick="showForm('soil_prediction')">🧪 Soil & Pest Detection</div>
+            <div class="option" id="cropOption" onclick="showForm('crop_mgmt')">🌾 Crop & Irrigation Management</div>
+            <div class="option" id="aidOption" onclick="showForm('govt_aid')">🏛 Government Aids</div>
+        </div>
+
+        <div id="farmerBot" class="farmer-bot">
+            <img src="{{ url_for('static', filename='images/farmer.jpg') }}" />
+
+            <div class="speech-bubble" id="botMessage">Welcome to Uzhavan! Click a section to get started.</div>
+        </div>
+        
+        <!-- Soil Prediction Form -->
+        <div id="soil_prediction" class="hidden">
+            <h3 id="soilTitle">🧪 Soil & Pest Detection</h3>
+            <form onsubmit="predictSoil(event)">
+                <div class="form-group">
+                    <label id="soilImageLabel" for="soilImage">Upload Soil Image:</label>
+                    <input type="file" id="soilImage" accept="image/*" required>
+                </div>
+                <button type="submit" class="button predict-button" id="soilButton">🔍 Predict Soil</button>
+            </form>
+            <div class="loading" id="soilLoading">Analyzing soil image...</div>
+            <div id="soilResult" class="result"></div>
+            <button onclick="goBack()" class="button back-button" id="backButton1">🔙 Back</button>
+        </div>
+        
+        <!-- Crop Management Form -->
+        <div id="crop_mgmt" class="hidden">
+            <h3 id="cropTitle">🌾 Crop & Irrigation Management</h3>
+            <form onsubmit="recommendCrop(event)">
+                <div class="form-group">
+                    <label id="nitrogenLabel" for="nitrogen">Nitrogen (N) level:</label>
+                    <input type="number" id="nitrogen" placeholder="Enter nitrogen level" required step="0.01">
+                </div>
+                <div class="form-group">
+                    <label id="phosphorousLabel" for="phosphorous">Phosphorous (P) level:</label>
+                    <input type="number" id="phosphorous" placeholder="Enter phosphorous level" required step="0.01">
+                </div>
+                <div class="form-group">
+                    <label id="potassiumLabel" for="potassium">Potassium (K) level:</label>
+                    <input type="number" id="potassium" placeholder="Enter potassium level" required step="0.01">
+                </div>
+                <div class="form-group">
+                    <label id="tempLabel" for="temperature">Temperature (°C):</label>
+                    <input type="number" id="temperature" placeholder="Enter temperature" required step="0.1">
+                </div>
+                <div class="form-group">
+                    <label id="humidityLabel" for="humidity">Humidity (%):</label>
+                    <input type="number" id="humidity" placeholder="Enter humidity percentage" required step="0.1">
+                </div>
+                <div class="form-group">
+                    <label id="phLabel" for="ph">Soil pH:</label>
+                    <input type="number" id="ph" placeholder="Enter soil pH (0-14)" required min="0" max="14" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label id="rainfallLabel" for="rainfall">Rainfall (mm):</label>
+                    <input type="number" id="rainfall" placeholder="Enter rainfall in mm" required step="0.1">
+                </div>
+
+                <div class="form-group">
+                    <label id="soilTypeLabel" for="soil_type">Soil Type</label>
+                    <input type="text" id="soil_type" placeholder="Enter soil type (e.g., Clay, Red)" required>
+                </div>
+                <button type="submit" class="button predict-button" id="cropButton">🌱 Recommend Crop & Irrigation</button>
+            </form>
+            <div class="loading" id="cropLoading">Analyzing soil conditions...</div>
+            <div id="cropResult" class="result"></div>
+            <button onclick="goBack()" class="button back-button" id="backButton2">🔙 Back</button>
+        </div>
+        
+        <!-- Government Aid Form -->
+        <div id="govt_aid" class="hidden">
+          <h3 id="aidTitle">🏛 Government Aids</h3>
+      
+          <form onsubmit="getGovernmentAid(event)">
+              <div class="form-group">
+                  <label id="stateLabel" for="state">State:</label>
+                  <input type="text" id="state" name="state" placeholder="Enter your state" required />
+              </div>
+              <div class="form-group">
+                  <label id="landLabel" for="land_size">Land Size (acres):</label>
+                  <input type="number" id="land_size" name="land_size" placeholder="Enter land size in acres" required min="0" step="0.1" />
+              </div>
+              <button type="submit" class="button predict-button" id="aidButton">📜 Get Government Schemes</button>
+          </form>
+      
+          <div class="loading" id="aidLoading" style="display: none;">Searching for government schemes...</div>
+          <div id="aidResult" class="result"></div>
+      
+          <button onclick="goBack()" class="button back-button" id="backButton3">🔙 Back</button>
+      </div>
+      
+
+    <script>
+        // Complete translation dictionary
+        const translations = {
+            en: {
+                appTitle: "🌿 Uzhavan 🤖",
+                languageLabel: "🌐 Select Language:",
+                soilOption: "🧪 Soil & Pest Detection",
+                cropOption: "🌾 Crop & Irrigation Management",
+                aidOption: "🏛 Government Aids",
+                soilTitle: "🧪 Soil & Pest Detection",
+                soilImageLabel: "Upload Soil Image:",
+                soilButton: "🔍 Predict Soil",
+                cropTitle: "🌾 Crop & Irrigation Management",
+                nitrogenLabel: "Nitrogen (N) level:",
+                phosphorousLabel: "Phosphorous (P) level:",
+                potassiumLabel: "Potassium (K) level:",
+                tempLabel: "Temperature (°C):",
+                humidityLabel: "Humidity (%):",
+                phLabel: "Soil pH:",
+                rainfallLabel: "Rainfall (mm):",
+                cropButton: "🌱 Recommend Crop & Irrigation",
+                aidTitle: "🏛 Government Aids",
+                stateLabel: "State:",
+                landLabel: "Land Size (acres):",
+                aidButton: "📜 Get Government Schemes",
+                backButton: "🔙 Back",
+                analyzingSoil: "Analyzing soil image...",
+                analyzingCrop: "Analyzing soil conditions...",
+                searchingSchemes: "Searching for government schemes...",
+                nitrogenPlaceholder: "Enter nitrogen level",
+                phosphorousPlaceholder: "Enter phosphorous level",
+                potassiumPlaceholder: "Enter potassium level",
+                tempPlaceholder: "Enter temperature",
+                humidityPlaceholder: "Enter humidity percentage",
+                phPlaceholder: "Enter soil pH (0-14)",
+                rainfallPlaceholder: "Enter rainfall in mm",
+                statePlaceholder: "Enter your state",
+                landPlaceholder: "Enter land size in acres"
+            },
+            hi: {
+                appTitle: "🌿 उझवन 🤖",
+                languageLabel: "🌐 भाषा चुनें:",
+                soilOption: "🧪 मिट्टी और कीट पहचान",
+                cropOption: "🌾 फसल और सिंचाई प्रबंधन",
+                aidOption: "🏛 सरकारी सहायता",
+                soilTitle: "🧪 मिट्टी और कीट पहचान",
+                soilImageLabel: "मिट्टी की छवि अपलोड करें:",
+                soilButton: "🔍 मिट्टी का विश्लेषण",
+                cropTitle: "🌾 फसल और सिंचाई प्रबंधन",
+                nitrogenLabel: "नाइट्रोजन (N) स्तर:",
+                phosphorousLabel: "फॉस्फोरस (P) स्तर:",
+                potassiumLabel: "पोटैशियम (K) स्तर:",
+                tempLabel: "तापमान (°C):",
+                humidityLabel: "नमी (%):",
+                phLabel: "मिट्टी का pH:",
+                rainfallLabel: "वर्षा (mm):",
+                cropButton: "🌱 फसल और सिंचाई सुझाव",
+                aidTitle: "🏛 सरकारी सहायता",
+                stateLabel: "राज्य:",
+                landLabel: "जमीन का आकार (एकड़):",
+                aidButton: "📜 योजनाएँ प्राप्त करें",
+                backButton: "🔙 वापस",
+                analyzingSoil: "मिट्टी की छवि का विश्लेषण...",
+                analyzingCrop: "मिट्टी की स्थिति का विश्लेषण...",
+                searchingSchemes: "सरकारी योजनाएँ खोज रहा...",
+                nitrogenPlaceholder: "नाइट्रोजन स्तर दर्ज करें",
+                phosphorousPlaceholder: "फॉस्फोरस स्तर दर्ज करें",
+                potassiumPlaceholder: "पोटैशियम स्तर दर्ज करें",
+                tempPlaceholder: "तापमान दर्ज करें",
+                humidityPlaceholder: "नमी प्रतिशत दर्ज करें",
+                phPlaceholder: "मिट्टी का pH दर्ज करें (0-14)",
+                rainfallPlaceholder: "वर्षा मिमी में दर्ज करें",
+                statePlaceholder: "अपना राज्य दर्ज करें",
+                landPlaceholder: "जमीन का आकार एकड़ में दर्ज करें"
+            },
+            te: {
+                appTitle: "🌿 ఉళవన్ 🤖",
+                languageLabel: "🌐 భాషను ఎంచుకోండి:",
+                soilOption: "🧪 నేల మరియు పురుగు గుర్తింపు",
+                cropOption: "🌾 పంట మరియు నీటిపారుదల నిర్వహణ",
+                aidOption: "🏛 ప్రభుత్వ సహాయాలు",
+                soilTitle: "🧪 నేల మరియు పురుగు గుర్తింపు",
+                soilImageLabel: "నేల చిత్రాన్ని అప్లోడ్ చేయండి:",
+                soilButton: "🔍 నేలను అంచనా వేయండి",
+                cropTitle: "🌾 పంట మరియు నీటిపారుదల నిర్వహణ",
+                nitrogenLabel: "నత్రజని (N) స్థాయి:",
+                phosphorousLabel: "భాస్వరం (P) స్థాయి:",
+                potassiumLabel: "పొటాషియం (K) స్థాయి:",
+                tempLabel: "ఉష్ణోగ్రత (°C):",
+                humidityLabel: "తేమ (%):",
+                phLabel: "నేల pH:",
+                rainfallLabel: "వర్షపాతం (mm):",
+                cropButton: "🌱 పంట & నీటిపారుదల సిఫార్సు",
+                aidTitle: "🏛 ప్రభుత్వ సహాయాలు",
+                stateLabel: "రాష్ట్రం:",
+                landLabel: "భూమి పరిమాణం (ఎకరాలు):",
+                aidButton: "📜 ప్రోగ్రామ్లు పొందండి",
+                backButton: "🔙 వెనుకకు",
+                analyzingSoil: "నేల చిత్రాన్ని విశ్లేషిస్తోంది...",
+                analyzingCrop: "నేల పరిస్థితులను విశ్లేషిస్తోంది...",
+                searchingSchemes: "ప్రభుత్వ ప్రోగ్రామ్లు శోధిస్తోంది...",
+                nitrogenPlaceholder: "నత్రజని స్థాయిని నమోదు చేయండి",
+                phosphorousPlaceholder: "భాస్వరం స్థాయిని నమోదు చేయండి",
+                potassiumPlaceholder: "పొటాషియం స్థాయిని నమోదు చేయండి",
+                tempPlaceholder: "ఉష్ణోగ్రత నమోదు చేయండి",
+                humidityPlaceholder: "తేమ శాతం నమోదు చేయండి",
+                phPlaceholder: "నేల pH నమోదు చేయండి (0-14)",
+                rainfallPlaceholder: "వర్షపాతం mmలో నమోదు చేయండి",
+                statePlaceholder: "మీ రాష్ట్రాన్ని నమోదు చేయండి",
+                landPlaceholder: "భూమి పరిమాణం ఎకరాలలో నమోదు చేయండి"
+            },
+            ta: {
+                appTitle: "🌿 உழவன் 🤖",
+                languageLabel: "🌐 மொழியைத் தேர்ந்தெடுக்கவும்:",
+                soilOption: "🧪 மண் மற்றும் பூச்சி கண்டறிதல்",
+                cropOption: "🌾 பயிர் மற்றும் நீர்ப்பாசன மேலாண்மை",
+                aidOption: "🏛 அரசு உதவிகள்",
+                soilTitle: "🧪 மண் மற்றும் பூச்சி கண்டறிதல்",
+                soilImageLabel: "மண் படத்தை பதிவேற்றுக:",
+                soilButton: "🔍 மண்ணை மதிப்பிடு",
+                cropTitle: "🌾 பயிர் மற்றும் நீர்ப்பாசன மேலாண்மை",
+                nitrogenLabel: "நைட்ரஜன் (N) அளவு:",
+                phosphorousLabel: "பாஸ்பரஸ் (P) அளவு:",
+                potassiumLabel: "பொட்டாசியம் (K) அளவு:",
+                tempLabel: "வெப்பநிலை (°C):",
+                humidityLabel: "ஈரப்பதம் (%):",
+                phLabel: "மண் pH:",
+                rainfallLabel: "மழைப்பொழிவு (mm):",
+                cropButton: "🌱 பயிர் & நீர்ப்பாசன பரிந்துரை",
+                aidTitle: "🏛 அரசு உதவிகள்",
+                stateLabel: "மாநிலம்:",
+                landLabel: "நில அளவு (ஏக்கர்):",
+                aidButton: "📜 திட்டங்களைப் பெறுக",
+                backButton: "🔙 பின்னால்",
+                analyzingSoil: "மண் படத்தை பகுப்பாய்வு செய்கிறது...",
+                analyzingCrop: "மண் நிலைகளை பகுப்பாய்வு செய்கிறது...",
+                searchingSchemes: "அரசு திட்டங்களை தேடுகிறது...",
+                nitrogenPlaceholder: "நைட்ரஜன் அளவை உள்ளிடவும்",
+                phosphorousPlaceholder: "பாஸ்பரஸ் அளவை உள்ளிடவும்",
+                potassiumPlaceholder: "பொட்டாசியம் அளவை உள்ளிடவும்",
+                tempPlaceholder: "வெப்பநிலையை உள்ளிடவும்",
+                humidityPlaceholder: "ஈரப்பத சதவீதத்தை உள்ளிடவும்",
+                phPlaceholder: "மண் pH ஐ உள்ளிடவும் (0-14)",
+                rainfallPlaceholder: "மழைப்பொழிவை mm இல் உள்ளிடவும்",
+                statePlaceholder: "உங்கள் மாநிலத்தை உள்ளிடவும்",
+                landPlaceholder: "நில அளவை ஏக்கரில் உள்ளிடவும்"
+            },
+            ml: {
+                appTitle: "🌿 ഉഴവൻ 🤖",
+                languageLabel: "🌐 ഭാഷ തിരഞ്ഞെടുക്കുക:",
+                soilOption: "🧪 മണ്ണും കീടങ്ങളും കണ്ടെത്തുക",
+                cropOption: "🌾 വിളയും ജലസേചനവും മാനേജ്മെന്റ്",
+                aidOption: "🏛 സർക്കാർ സഹായങ്ങൾ",
+                soilTitle: "🧪 മണ്ണും കീടങ്ങളും കണ്ടെത്തൽ",
+                soilImageLabel: "മണ്ണിന്റെ ചിത്രം അപ്‌ലോഡ് ചെയ്യുക:",
+                soilButton: "🔍 മണ്ണ് പ്രവചിക്കുക",
+                cropTitle: "🌾 വിളയും ജലസേചനവും മാനേജ്മെന്റ്",
+                nitrogenLabel: "നൈട്രജൻ (N) നില:",
+                phosphorousLabel: "ഫോസ്ഫറസ് (P) നില:",
+                potassiumLabel: "പൊട്ടാസ്യം (K) നില:",
+                tempLabel: "താപനില (°C):",
+                humidityLabel: "ആർദ്രത (%):",
+                phLabel: "മണ്ണിന്റെ പിഎച്ച് നില:",
+                rainfallLabel: "മഴക്കണക്കു (mm):",
+                cropButton: "🌱 വിളയും ജലസേചനവും ശുപാർശ ചെയ്യുക",
+                aidTitle: "🏛 സർക്കാർ സഹായങ്ങൾ",
+                stateLabel: "സംസ്ഥാനം:",
+                landLabel: "ഭൂമിയുടെ വിസ്തീർണ്ണം (എക്കർ):",
+                aidButton: "📜 സർക്കാർ പദ്ധതികൾ നേടുക",
+                backButton: "🔙 തിരികെ",
+                analyzingSoil: "മണ്ണിന്റെ ചിത്രം വിശകലനം ചെയ്യുന്നു...",
+                analyzingCrop: "മണ്ണിന്റെ അവസ്ഥ വിശകലനം ചെയ്യുന്നു...",
+                searchingSchemes: "സർക്കാർ പദ്ധതികൾ കണ്ടെത്തുന്നു...",
+                nitrogenPlaceholder: "നൈട്രജന്റെ നില നൽകുക",
+                phosphorousPlaceholder: "ഫോസ്ഫറസിന്റെ നില നൽകുക",
+                potassiumPlaceholder: "പൊട്ടാസ്യത്തിന്റെ നില നൽകുക",
+                tempPlaceholder: "താപനില നൽകുക",
+                humidityPlaceholder: "ആർദ്രത നൽകുക",
+                phPlaceholder: "മണ്ണിന്റെ പിഎച്ച് (0-14) നൽകുക",
+                rainfallPlaceholder: "മഴക്കണക്കുകൾ mm-ൽ നൽകുക",
+                statePlaceholder: "സംസ്ഥാനം നൽകുക",
+                landPlaceholder: "എക്കറിൽ നൽകുക"
+            },
+            kn: {
+                appTitle: "🌿 ಉಳವನ 🤖",
+                languageLabel: "🌐 ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ:",
+                soilOption: "🧪 ಮಣ್ಣು ಮತ್ತು ಕೀಟ ಪತ್ತೆ",
+                cropOption: "🌾 ಬೆಳೆ ಮತ್ತು ನೀರಾವರಿ ನಿರ್ವಹಣೆ",
+                aidOption: "🏛 ಸರ್ಕಾರದ ಸಹಾಯಧನಗಳು",
+                soilTitle: "🧪 ಮಣ್ಣು ಮತ್ತು ಕೀಟ ಪತ್ತೆ",
+                soilImageLabel: "ಮಣ್ಣಿನ ಚಿತ್ರವನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡಿ:",
+                soilButton: "🔍 ಮಣ್ಣು ಭವಿಷ್ಯವಾಣಿ",
+                cropTitle: "🌾 ಬೆಳೆ ಮತ್ತು ನೀರಾವರಿ ನಿರ್ವಹಣೆ",
+                nitrogenLabel: "ನೈಟ್ರೋಜನ್ (N) ಮಟ್ಟ:",
+                phosphorousLabel: "ಫಾಸ್ಫರಸ್ (P) ಮಟ್ಟ:",
+                potassiumLabel: "ಪೋಟಾಷಿಯಂ (K) ಮಟ್ಟ:",
+                tempLabel: "ತಾಪಮಾನ (°C):",
+                humidityLabel: "ಆರ್ದ್ರತೆ (%):",
+                phLabel: "ಮಣ್ಣಿನ ಪಿಎಚ್ ಮಟ್ಟ:",
+                rainfallLabel: "ಮಳೆ (ಮಿಮೀ):",
+                cropButton: "🌱 ಬೆಳೆ ಮತ್ತು ನೀರಾವರಿ ಶಿಫಾರಸು ಮಾಡಿ",
+                aidTitle: "🏛 ಸರ್ಕಾರದ ಸಹಾಯಧನಗಳು",
+                stateLabel: "ರಾಜ್ಯ:",
+                landLabel: "ಭೂಮಿಯ ಗಾತ್ರ (ಏಕರೆಗಳಲ್ಲಿ):",
+                aidButton: "📜 ಸರ್ಕಾರದ ಯೋಜನೆಗಳನ್ನು ಪಡೆಯಿರಿ",
+                backButton: "🔙 ಹಿಂದಿರುಗಿ",
+                analyzingSoil: "ಮಣ್ಣಿನ ಚಿತ್ರವನ್ನು ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ...",
+                analyzingCrop: "ಮಣ್ಣಿನ ಪರಿಸ್ಥಿತಿಯನ್ನು ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ...",
+                searchingSchemes: "ಸರ್ಕಾರದ ಯೋಜನೆಗಳನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ...",
+                nitrogenPlaceholder: "ನೈಟ್ರೋಜನ್ ಮಟ್ಟ ನಮೂದಿಸಿ",
+                phosphorousPlaceholder: "ಫಾಸ್ಫರಸ್ ಮಟ್ಟ ನಮೂದಿಸಿ",
+                potassiumPlaceholder: "ಪೋಟಾಷಿಯಂ ಮಟ್ಟ ನಮೂದಿಸಿ",
+                tempPlaceholder: "ತಾಪಮಾನವನ್ನು ನಮೂದಿಸಿ",
+                humidityPlaceholder: "ಆರ್ದ್ರತೆಯನ್ನು ನಮೂದಿಸಿ",
+                phPlaceholder: "ಮಣ್ಣಿನ ಪಿಎಚ್ (0-14) ನಮೂದಿಸಿ",
+                rainfallPlaceholder: "ಮಳೆಯ ಪ್ರಮಾಣವನ್ನು ಮಿಮೀನಲ್ಲಿ ನಮೂದಿಸಿ",
+                statePlaceholder: "ನಿಮ್ಮ ರಾಜ್ಯವನ್ನು ನಮೂದಿಸಿ",
+                landPlaceholder: "ಭೂಮಿಯ ಗಾತ್ರವನ್ನು ಏಕರೆಗಳಲ್ಲಿ ನಮೂದಿಸಿ"
+            }
+
+        };
+
+        // Set initial language from localStorage or default to English
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLang = localStorage.getItem("lang") || "en";
+            document.getElementById("language").value = savedLang;
+            applyTranslations(savedLang);
+        });
+
+        function changeLanguage() {
+            const selectedLang = document.getElementById("language").value;
+            localStorage.setItem("lang", selectedLang);
+            applyTranslations(selectedLang);
+        }
+
+        function applyTranslations(lang) {
+            const langData = translations[lang] || translations['en'];
+            
+            // Update all text elements
+            document.getElementById("appTitle").textContent = langData.appTitle;
+            document.getElementById("languageLabel").textContent = langData.languageLabel;
+            document.getElementById("soilOption").textContent = langData.soilOption;
+            document.getElementById("cropOption").textContent = langData.cropOption;
+            document.getElementById("aidOption").textContent = langData.aidOption;
+            document.getElementById("soilTitle").textContent = langData.soilTitle;
+            document.getElementById("soilImageLabel").textContent = langData.soilImageLabel;
+            document.getElementById("soilButton").textContent = langData.soilButton;
+            document.getElementById("cropTitle").textContent = langData.cropTitle;
+            document.getElementById("nitrogenLabel").textContent = langData.nitrogenLabel;
+            document.getElementById("phosphorousLabel").textContent = langData.phosphorousLabel;
+            document.getElementById("potassiumLabel").textContent = langData.potassiumLabel;
+            document.getElementById("tempLabel").textContent = langData.tempLabel;
+            document.getElementById("humidityLabel").textContent = langData.humidityLabel;
+            document.getElementById("phLabel").textContent = langData.phLabel;
+            document.getElementById("rainfallLabel").textContent = langData.rainfallLabel;
+            document.getElementById("cropButton").textContent = langData.cropButton;
+            document.getElementById("aidTitle").textContent = langData.aidTitle;
+            document.getElementById("stateLabel").textContent = langData.stateLabel;
+            document.getElementById("landLabel").textContent = langData.landLabel;
+            document.getElementById("aidButton").textContent = langData.aidButton;
+            document.getElementById("backButton1").textContent = langData.backButton;
+            document.getElementById("backButton2").textContent = langData.backButton;
+            document.getElementById("backButton3").textContent = langData.backButton;
+            document.getElementById("soilLoading").textContent = langData.analyzingSoil;
+            document.getElementById("cropLoading").textContent = langData.analyzingCrop;
+            document.getElementById("aidLoading").textContent = langData.searchingSchemes;
+            
+            // Update placeholders
+            document.getElementById("nitrogen").placeholder = langData.nitrogenPlaceholder;
+            document.getElementById("phosphorous").placeholder = langData.phosphorousPlaceholder;
+            document.getElementById("potassium").placeholder = langData.potassiumPlaceholder;
+            document.getElementById("temperature").placeholder = langData.tempPlaceholder;
+            document.getElementById("humidity").placeholder = langData.humidityPlaceholder;
+            document.getElementById("ph").placeholder = langData.phPlaceholder;
+            document.getElementById("rainfall").placeholder = langData.rainfallPlaceholder;
+            document.getElementById("state").placeholder = langData.statePlaceholder;
+            document.getElementById("land_size").placeholder = langData.landPlaceholder;
+        }
+
+    
+    function showForm(id) {
+        document.getElementById("options").style.display = "none";
+        document.querySelectorAll(".hidden").forEach(div => div.style.display = "none");
+        document.getElementById(id).style.display = "block";
+        document.querySelectorAll(".result").forEach(el => el.innerHTML = "");
+    }
+    
+    function updateBotMessage(section) {
+        const messageMap = {
+            "soil": "This section lets you detect the soil type and any pests using an image!",
+            "crop": "This helps you find the best crop and irrigation needs based on your soil data.",
+            "aids": "Here you'll find government schemes based on your state and land area.",
+            "home": "Welcome back! Choose any option to begin your agricultural journey."
+    };
+    document.getElementById("botMessage").textContent = messageMap[section] || messageMap["home"];
+    }
+
+    // Example hook: whenever user clicks a section
+    document.getElementById("soilOption").addEventListener("click", () => updateBotMessage("soil"));
+    document.getElementById("cropOption").addEventListener("click", () => updateBotMessage("crop"));
+    document.getElementById("aidOption").addEventListener("click", () => updateBotMessage("aids"));
+    document.getElementById("backButton").addEventListener("click", () => updateBotMessage("home"));
+
+
+
+    function goBack() {
+    // Show the main options
+        document.getElementById("options").style.display = "block";
+
+        // Hide all other sections
+        document.querySelectorAll(".hidden").forEach(div => div.style.display = "none");
+
+        // Clear all result displays
+        document.querySelectorAll(".result").forEach(el => el.innerHTML = "");
+
+        // Reset file inputs (for soil image)
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.value = '';
+        });
+
+        // Clear preview images if used
+        document.querySelectorAll('img.preview').forEach(img => {
+            img.src = '';
+            img.style.display = "none";
+        });
+
+        // Reset all text inputs (for crop and aid sections)
+        document.querySelectorAll('input[type="text"], input[type="number"]').forEach(input => {
+            input.value = '';
+        });
+
+        // Reset all dropdowns if you have any (like language or state selectors)
+        document.querySelectorAll('select').forEach(select => {
+            select.selectedIndex = 0;
+        });
+
+        // Hide any loading indicators
+        document.querySelectorAll(".loader").forEach(loader => {
+            loader.style.display = "none";
+        });
+    }
+
+
+
+    function showLoading(loaderId, show) {
+        document.getElementById(loaderId).style.display = show ? "block" : "none";
+    }
+
+    function formatResult(data) {
+        if (!data || (!data.data && !data.available_schemes)) {
+            return `<div class="error">No results found</div>`;
+        }
+
+        // Government Scheme Result
+        if (data.available_schemes) {
+            if (data.available_schemes.length === 0) {
+                return `<div class="no-schemes">${data.eligibility}</div>`;
+            }
+
+            const schemesHTML = data.available_schemes.map(s => `<li>${s}</li>`).join("");
+            return `
+                <div class="scheme-section">
+                    <h3>Available Schemes:</h3>
+                    <ul>${schemesHTML}</ul>
+                    <p><strong>Eligibility:</strong> ${data.eligibility}</p>
+                    <p><strong>Contact:</strong> ${data.contact}</p>
+                </div>
+            `;
+        }
+
+        // Crop / Soil Results
+        let html = '<div id="result">';
+        for (const [key, value] of Object.entries(data.data)) {
+            html += `<div class="result-item">
+                        <span class="result-title">${key.replace(/_/g, ' ').toUpperCase()}:</span> `;
+            if (Array.isArray(value)) {
+                html += '<ul>';
+                value.forEach(item => {
+                    html += `<li>${item}</li>`;
+                });
+                html += '</ul>';
+            } else {
+                html += `<span>${value}</span>`;
+            }
+            html += '</div>';
+        }
+        html += '</div>';
+        return html;
+    }
+
+    async function recommendCrop(event) {
+        event.preventDefault();
+        const resultDiv = document.getElementById("cropResult");
+        resultDiv.innerHTML = "";
+        showLoading("cropLoading", true);
+
+        // Collect features for crop recommendation
+        const features = ["nitrogen", "phosphorous", "potassium", "temperature", "humidity", "ph", "rainfall"];
+        const featureValues = features.map(f => parseFloat(document.getElementById(f).value) || 0);
+
+        // Collect soil type (for irrigation use only)
+        const soilType = document.getElementById("soilType").value || "unknown";
+
+        // Store full form data locally for later use (e.g., irrigation)
+        const formData = {
+            features: featureValues,
+            soilType: soilType,
+            language: localStorage.getItem("lang") || "en"
+        };
+
+        try {
+            // Only send relevant data to crop recommendation endpoint
+            const cropResponse = await fetch("/recommend_crop", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    N: featureValues[0],
+                    P: featureValues[1],
+                    K: featureValues[2],
+                    temperature: featureValues[3],
+                    humidity: featureValues[4],
+                    ph: featureValues[5],
+                    rainfall: featureValues[6],
+                    language: formData.language
+                })
+            });
+
+            if (!cropResponse.ok) throw new Error("Network response was not ok");
+
+            const cropData = await cropResponse.json();
+            resultDiv.innerHTML = formatResult(cropData);
+        } catch (error) {
+            resultDiv.innerHTML = `<div class="error">Error in crop recommendation: ${error.message}</div>`;
+        } finally {
+            showLoading("cropLoading", false);
+        }
+    }
+
+
+    async function predictSoil(event) {
+        event.preventDefault();
+        const resultDiv = document.getElementById("soilResult");
+        resultDiv.innerHTML = "";
+        showLoading("soilLoading", true);
+
+        const formData = new FormData();
+        formData.append("image", document.getElementById("soilImage").files[0]);
+        formData.append("language", localStorage.getItem("lang") || "en");
+
+        try {
+            const response = await fetch("/predict_soil", {
+                method: "POST",
+                body: formData
+            });
+
+            if (!response.ok) throw new Error("Network response was not ok");
+
+            const data = await response.json();
+            resultDiv.innerHTML = formatResult(data);
+        } catch (error) {
+            resultDiv.innerHTML = `<div class="error">Error in soil prediction: ${error.message}</div>`;
+        } finally {
+            showLoading("soilLoading", false);
+        }
+    }
+
+    async function getGovernmentAid(event) {
+    event.preventDefault();
+    const resultDiv = document.getElementById("aidResult");
+    resultDiv.innerHTML = "";
+    showLoading("aidLoading", true);
+
+    const formData = {
+        state: document.getElementById("state").value.trim(),
+        land_size: parseFloat(document.getElementById("land_size").value),
+        language: localStorage.getItem("lang") || "en"
+    };
+
+    try {
+        const response = await fetch("/government_aids", {  // ✅ fixed URL
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+        });
+
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        const data = await response.json();
+        resultDiv.innerHTML = formatResult(data);
+    } catch (error) {
+        resultDiv.innerHTML = `<div class="error">Error fetching government schemes: ${error.message}</div>`;
+    } finally {
+        showLoading("aidLoading", false);
+    }
+}
+
+</script>
+
+</body>
+</html>

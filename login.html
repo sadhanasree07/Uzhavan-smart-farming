@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Uzhavan - Authentication Page</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='images/uzhavan.ico') }}" type="image/x-icon">
+
+    <!-- External Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    
+    <!-- Linked CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/stylesLogin.css') }}">
+    <style>
+        /* Larger Logo Effect */
+        .logo-icon {
+            display: inline-block;
+            background-image: url("{{ url_for('static', filename='images/uzhavan.ico') }}");
+            background-size: contain;
+            background-repeat: no-repeat;
+            width: 70px;  /* Increased size */
+            height: 70px; /* Increased size */
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover .logo-icon {
+            transform: scale(1.05); /* Subtle hover effect */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="auth-section">
+            <div class="auth-container" id="authContainer">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <div class="logo">
+                            <span class="logo-icon"></span>
+                            <h1>உழவன்</h1>
+                        </div>
+                        <div class="main-slogan">
+                            <h2>உழுவது கைவிடேல்</h2>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="login">Login</button>
+                        <button class="tab-btn" data-tab="register">Register</button>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="loginForm" class="auth-form active">
+                        <div class="form-group">
+                            <label for="loginPhone">Phone Number</label>
+                            <input type="tel" id="loginPhone" placeholder="Enter your phone number (e.g., 9876543210)" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="loginEmail">Email (Optional)</label>
+                            <input type="email" id="loginEmail" placeholder="youremail@gmail.com" />
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" placeholder="Your password" required />
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <span>Sign In</span>
+                            <i class="fas fa-arrow-right btn-icon"></i>
+                        </button>
+                    </form>
+
+                    <!-- Register Form -->
+                    <form id="registerForm" class="auth-form">
+                        <div class="form-group">
+                            <label for="registerName">Full Name</label>
+                            <input type="text" id="registerName" placeholder="Your full name" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPhone">Phone Number</label>
+                            <input type="tel" id="registerPhone" placeholder="Enter your phone number (e.g., 9876543210)" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail">Email (Optional)</label>
+                            <input type="email" id="registerEmail" placeholder="youremail@gmail.com" />
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword">Password</label>
+                            <input type="password" id="registerPassword" placeholder="Create a password" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" placeholder="Confirm your password" required />
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <span>Create Account</span>
+                            <i class="fas fa-user-plus btn-icon"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="slogan-section">
+            <div class="slogan-container">
+                <h2 id="dynamic-slogan" class="slogan-text"></h2>
+                <p id="slogan-language" class="slogan-language"></p>
+            </div>
+            <div class="background-image"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/scriptLogin.js') }}"></script>
+</body>
+</html>
