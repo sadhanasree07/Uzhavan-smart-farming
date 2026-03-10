@@ -1,7 +1,5 @@
 Flask
 flask-cors
-torch
-torchvision
 Pillow
 joblib
 pandas
@@ -13,4 +11,3 @@ scikit-learn
 gunicorn
 pymongo 
 python-dotenv
-pymongo[srv]==3.12
